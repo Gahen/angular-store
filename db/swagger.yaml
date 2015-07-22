@@ -2,138 +2,168 @@
 # as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
-  title: Uber API
-  description: Move your app forward with the Uber API
+  title: Angular Store API
+  description: Move your app forward with the Angular Store API
   version: "1.0.0"
 # the domain of the service
-host: api.uber.com
+host: jtumas.com.ar
 # array of all schemes that your API supports
 schemes:
   - https
 # will be prefixed to all paths
-basePath: /v1
+basePath: /storeAPI/v1
 produces:
   - application/json
 paths:
-  /products:
+  /products/{productCode}:
     get:
       summary: Product Types
       description: |
-        The Products endpoint returns information about the *Uber* products
-        offered at a given location. The response includes the display name
-        and other details about each product, and lists the products in the
-        proper display order.
+        The Products endpoint returns information about the *Angular Store* products.
       parameters:
-        - name: latitude
-          in: query
-          description: Latitude component of location.
+        - name: productCode
+          in: path
+          description: Unique product code
           required: true
-          type: number
-          format: double
-        - name: longitude
-          in: query
-          description: Longitude component of location.
-          required: true
-          type: number
-          format: double
+          type: string
       tags:
         - Products
       responses:
         200:
           description: An array of products
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Product'
+            $ref: '#/definitions/Product'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /estimates/price:
+  /sales:
     get:
-      summary: Price Estimates
-      description: |
-        The Price Estimates endpoint returns an estimated price range
-        for each product offered at a given location. The price estimate is
-        provided as a formatted string with the full price range and the localized
-        currency symbol.<br><br>The response also includes low and high estimates,
-        and the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for
-        situations requiring currency conversion. When surge is active for a particular
-        product, its surge_multiplier will be greater than 1, but the price estimate
-        already factors in this multiplier.
-      parameters:
-        - name: start_latitude
-          in: query
-          description: Latitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: start_longitude
-          in: query
-          description: Longitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: end_latitude
-          in: query
-          description: Latitude component of end location.
-          required: true
-          type: number
-          format: double
-        - name: end_longitude
-          in: query
-          description: Longitude component of end location.
-          required: true
-          type: number
-          format: double
-      tags:
-        - Estimates
+      summary: Sales
+      description: All the store sales
       responses:
         200:
-          description: An array of price estimates by product
+          description: All sales
           schema:
             type: array
             items:
-              $ref: '#/definitions/PriceEstimate'
+              $ref: '#/definitions/Sale'
+          examples:
+            application/json:
+              items: 
+                - 
+                  test: something
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /estimates/time:
+  /sales/{saleId}:
     get:
-      summary: Time Estimates
-      description: The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.
+      summary: Sale
+      description: Sale details
       parameters:
-        - name: start_latitude
-          in: query
-          description: Latitude component of start location.
+        - name: saleId
+          in: path
+          description: Unique sale identifier
           required: true
-          type: number
-          format: double
-        - name: start_longitude
-          in: query
-          description: Longitude component of start location.
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: A sale
+          schema:
+            $ref: '#/definitions/Sale'
+          examples:
+            application/json:
+              test: something
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /stock/{storeId}:
+    get:
+      summary: Stock details
+      description: The store's complete stock
+      parameters:
+        - name: storeId
+          in: path
+          description: Unique Store's id.
           required: true
-          type: number
-          format: double
-        - name: customer_uuid
-          in: query
-          type: string
-          format: uuid
-          description: Unique customer identifier to be used for experience customization.
-        - name: product_id
-          in: query
-          type: string
-          description: Unique identifier representing a specific product for a given latitude & longitude.
-      tags:
-        - Estimates
+          type: integer
+          format: int32
       responses:
         200:
           description: An array of products
           schema:
+            $ref: '#/definitions/Activities'
+          examples:
+            application/json:
+              name: Puma
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /reposition/{repositionId}:
+    get:
+      summary: Reposition details
+      description: All the details of the selected reposition.
+      parameters:
+        - name: repositionId
+          in: path
+          description: Unique reposition's id.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: An array of the reposition's products and specific details
+          schema:
+            $ref: '#/definitions/Activities'
+          examples:
+            application/json:
+              name: Puma
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users:
+    get:
+      summary: System user's
+      description: All system users available for the current scope.
+      responses:
+        200:
+          description: An array of system users
+          schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              $ref: '#/definitions/Person'
+          examples:
+            application/json:
+              - user: 
+                  name: cacho
+              - other:
+                  name: sarasa
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /clients:
+    get:
+      summary: Store clients
+      description: All clients owned by the current store.
+      responses:
+        200:
+          description: An array of clients
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Person'
+          examples:
+            application/json:
+              - user: 
+                  name: cacho
+              - other:
+                  name: sarasa
         default:
           description: Unexpected error
           schema:
@@ -148,7 +178,7 @@ paths:
         200:
           description: Profile information for a user
           schema:
-            $ref: '#/definitions/Profile'
+            $ref: '#/definitions/Person'
         default:
           description: Unexpected error
           schema:
@@ -194,13 +224,17 @@ definitions:
       images:
         type: string
         description: Image URL representing the product.
+      amount:
+        type: integer
+        description: Optional. Associated quantity.
   Sale:
     properties:
       id:
         type: string
         description: Unique sale identifier.
       creation:
-        type: date
+        type: string
+        format: date
         description: Creation time
       client_id: 
         type: string
@@ -215,30 +249,49 @@ definitions:
         type: number
         description: Net discount 
       comment:
-        type: text
+        type: string
         description: Sale's extra information.
-  User:
+      products:
+        type: array
+        items: 
+          $ref: '#/definitions/Activity'
+  Person:
     properties:
       first_name:
         type: string
-        description: First name of the Uber user.
+        description: First name of the ERP user.
       last_name:
         type: string
-        description: Last name of the Uber user.
+        description: Last name of the ERP user.
       email:
         type: string
-        description: Email address of the Uber user
+        description: Email address of the ERP user
       picture:
         type: string
-        description: Image URL of the Uber user.
-      promo_code:
+        description: Image URL of the ERP user.
+      phone:
         type: string
-        description: Promo code of the Uber user.
+      address:
+        type: string
+      postal_code:
+        type: integer
+      area:
+        type: string
+      state:
+        type: string
+      country:
+        type: string
+      local_id:
+        type: integer
   Activity:
     properties:
       uuid:
         type: string
         description: Unique identifier for the activity
+      elements:
+        type: array
+        items:
+          $ref: '#/definitions/Product'
   Activities:
     properties:
       offset:

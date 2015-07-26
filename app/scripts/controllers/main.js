@@ -2,16 +2,16 @@
 
 /**
  * @ngdoc function
- * @name angularStoreApp.controller:MainCtrl
+ * @name angularStore.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the angularStoreApp
+ * Controller of the angularStore
  */
-angular.module('angularStoreApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+angular.module('angularStore')
+	.controller('MainCtrl', function ($scope) {
+		$scope.awesomeThings = [
+			'HTML5 Boilerplate',
+			'AngularJS',
+			'Karma'
+		];
+	});

@@ -13,5 +13,14 @@ angular
     'ngAnimate',
     'ngResource',
     'ngSanitize',
-    'ngTouch'
-  ]);
+    'ngTouch',
+    'ui.router'
+  ])
+  .config(function ($stateProvider) {
+    $stateProvider
+      .state('product', {
+        url: '/product/:id',
+        templateUrl: 'views/product.html',
+        controller: 'angularStoreApp.ProductCtrl'
+      });
+  });

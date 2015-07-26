@@ -41,6 +41,8 @@ paths:
     get:
       summary: Sales
       description: All the store sales
+      tags:
+        - Store
       responses:
         200:
           description: All sales
@@ -68,6 +70,8 @@ paths:
           required: true
           type: integer
           format: int32
+      tags:
+        - Store
       responses:
         200:
           description: A sale
@@ -91,6 +95,8 @@ paths:
           required: true
           type: integer
           format: int32
+      tags:
+        - Store
       responses:
         200:
           description: An array of products
@@ -114,6 +120,8 @@ paths:
           required: true
           type: integer
           format: int32
+      tags:
+        - Store
       responses:
         200:
           description: An array of the reposition's products and specific details
@@ -130,6 +138,8 @@ paths:
     get:
       summary: System user's
       description: All system users available for the current scope.
+      tags:
+        - User
       responses:
         200:
           description: An array of system users
@@ -151,6 +161,8 @@ paths:
     get:
       summary: Store clients
       description: All clients owned by the current store.
+      tags:
+        - Store
       responses:
         200:
           description: An array of clients

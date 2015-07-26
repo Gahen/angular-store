@@ -1,0 +1,24 @@
+<form>
+  <div class="form-group" ng-submit="save()">
+    <label for="code">Code</label>
+    <input ng-model="product.code" type="text" class="form-control" id="code" placeholder="Code">
+  </div>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input ng-model="product.display_name" type="text" class="form-control" id="name" placeholder="Name">
+  </div>
+  <div class="form-group">
+    <label for="detail">Detail</label>
+    <textarea ng-model="product.detail" type="text" class="form-control" id="detail" placeholder="Detail"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">Images</label>
+    <input type="file" id="exampleInputFile">
+    <p class="help-block">Example block-level help text here.</p>
+  </div>
+  <div class="form-group">
+    <label for="amount">Amount</label>
+    <input ng-model="product.amount" type="text" class="form-control" id="amount" placeholder="Amount">
+  </div>
+  <button type="submit" class="btn btn-default">Save</button>
+</form>

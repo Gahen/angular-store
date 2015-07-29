@@ -1,10 +1,8 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
   title: Angular Store API
-  description: Move your app forward with the Angular Store API
-  version: "1.0.0"
+  description: Store module for ERP based on AngularJS
+  version: "0.0.1"
 # the domain of the service
 host: jtumas.com.ar
 # array of all schemes that your API supports
@@ -12,14 +10,42 @@ schemes:
   - https
 # will be prefixed to all paths
 basePath: /storeAPI/v1
+consumes:
+  - application/json
 produces:
   - application/json
 paths:
+  /products:
+    get:
+      tags:
+        - Products
+      description: Get a list of products.
+      responses:
+        200:
+          description: An array of product objects.
+          schema:
+            $ref: '#/definitions/Product'
+    put:
+      tags:
+       - Products
+      description: Create a new product.
+      parameters:
+        - name: body
+          in: body
+          description: Product object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: Product created succesfully.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /products/{productCode}:
     get:
-      summary: Product Types
-      description: |
-        The Products endpoint returns information about the *Angular Store* products.
+      description: Get information about a product.
       parameters:
         - name: productCode
           in: path
@@ -30,9 +56,51 @@ paths:
         - Products
       responses:
         200:
-          description: An array of products
+          description: A product object.
           schema:
-            $ref: '#/definitions/Product'
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Update a product.
+      parameters:
+      - name: productCode
+        in: path
+        description: Id for product to be updated
+      - name: body
+        in: body
+        description: Product object to be created.
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: Product updated succesfully.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Delete a product.
+      parameters:
+        - name: productCode
+          in: path
+          description: Code for product to be deleted.
+          required: true
+          type: string
+      tags:
+        - Products
+      responses:
+        200:
+          description: A product object.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
         default:
           description: Unexpected error
           schema:
@@ -41,6 +109,8 @@ paths:
     get:
       summary: Sales
       description: All the store sales
+      tags:
+        - Store
       responses:
         200:
           description: All sales
@@ -48,11 +118,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Sale'
-          examples:
-            application/json:
-              items: 
-                - 
-                  test: something
         default:
           description: Unexpected error
           schema:
@@ -68,6 +133,8 @@ paths:
           required: true
           type: integer
           format: int32
+      tags:
+        - Store
       responses:
         200:
           description: A sale
@@ -91,6 +158,8 @@ paths:
           required: true
           type: integer
           format: int32
+      tags:
+        - Store
       responses:
         200:
           description: An array of products
@@ -114,6 +183,8 @@ paths:
           required: true
           type: integer
           format: int32
+      tags:
+        - Store
       responses:
         200:
           description: An array of the reposition's products and specific details
@@ -130,6 +201,8 @@ paths:
     get:
       summary: System user's
       description: All system users available for the current scope.
+      tags:
+        - User
       responses:
         200:
           description: An array of system users
@@ -151,6 +224,8 @@ paths:
     get:
       summary: Store clients
       description: All clients owned by the current store.
+      tags:
+        - Store
       responses:
         200:
           description: An array of clients

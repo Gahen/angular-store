@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 		dist: 'dist',
 		test: 'test',
 		e2e: 'test/e2e',
-		unit: 'test/unit'
+		unit: 'test/spec'
 	};
 
 	// Define the configuration for all the tasks
@@ -84,7 +84,8 @@ module.exports = function (grunt) {
 					cwd: '<%= yeoman.app %>',
 					src: [
 						'scripts/*.js',
-						'scripts/controllers/{,*/,*/*/}*.js'
+						'scripts/controllers/{,*/,*/*/}*.js',
+						'scripts/services/{,*/,*/*/}*.js'
 					],
 					dest: '.tmp/'
 				}],
@@ -102,7 +103,7 @@ module.exports = function (grunt) {
 					expand: true,
 					cwd: '<%= yeoman.unit %>',
 					src: '{,*/}*.js',
-					dest: '.tmp/unit'
+					dest: '.tmp/spec'
 				}],
 			}
 		},
@@ -470,6 +471,8 @@ module.exports = function (grunt) {
 		'wiredep:test',
 		'concurrent:test',
 		'autoprefixer',
+		'babel:src',
+		'babel:test',
 		'connect:test',
 		'karma'
 	]);

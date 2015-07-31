@@ -1,0 +1,863 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Angular Store API",
+        "description": "Store module for ERP based on AngularJS",
+        "version": "0.0.1"
+    },
+    "host": "jtumas.com.ar",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/storeAPI/v1",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Get a list of products.",
+                "responses": {
+                    "200": {
+                        "description": "Products successfully retrieved.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Product"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Create a new product.",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Product object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product created succesfully."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{productId}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Get information about a product.",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Unique product id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A product object.",
+                        "schema": {
+                            "$ref": "#/definitions/Product"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Update a product.",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Unique product code",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Product object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product updated succesfully."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Delete a product.",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Code for product to be deleted.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product successfully deleted."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/sales": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Get a list of sales.",
+                "responses": {
+                    "200": {
+                        "description": "Sales successfully retrieved.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Sale"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Create a new sale.",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Sale object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Sale"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sale sucessfully created."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/sales/{saleId}": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Get information about a sale.",
+                "parameters": [
+                    {
+                        "name": "saleId",
+                        "in": "path",
+                        "description": "Unique sale identifier",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A sale",
+                        "schema": {
+                            "$ref": "#/definitions/Sale"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Add an activity to the sale.",
+                "parameters": [
+                    {
+                        "name": "saleId",
+                        "in": "path",
+                        "description": "Unique sale identifier",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The activity object to be added to the sale.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Activity"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Activity successfully added."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Update a sale.",
+                "parameters": [
+                    {
+                        "name": "saleId",
+                        "in": "path",
+                        "description": "Unique sale identifier",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sale successfully updated."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Delete a sale.",
+                "parameters": [
+                    {
+                        "name": "saleId",
+                        "in": "path",
+                        "description": "Unique sale identifier",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sale successfully deleted."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/stock/{storeId}": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "summary": "Stock details",
+                "description": "The store's complete stock",
+                "parameters": [
+                    {
+                        "name": "storeId",
+                        "in": "path",
+                        "description": "Unique Store's id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of activities.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Activity"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/repositions/{repositionId}": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "summary": "Reposition details",
+                "description": "All the details of the selected reposition.",
+                "parameters": [
+                    {
+                        "name": "repositionId",
+                        "in": "path",
+                        "description": "Unique reposition's id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of the reposition's products and specific details.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Activity"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Get a list of system users",
+                "responses": {
+                    "200": {
+                        "description": "An array of system users",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Person"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Create a new user",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User created successfully"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Get information about a user.",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Unique user id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User retrieved successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Update a user.",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Unique user id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated succesfully."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Delete a user.",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Unique user id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully deleted."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clients": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "summary": "Store clients",
+                "description": "Get a list of all clients owned by the current store.",
+                "responses": {
+                    "200": {
+                        "description": "An array of clients",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Person"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Create a new client",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Client object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of clients"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/clients/{clientId}": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Get information about a client.",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "Unique client id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User retrieved successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Update a client.",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "Unique client id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Client object to be created.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Client succesfully updated."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Store"
+                ],
+                "description": "Delete a user.",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "Unique client id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Client successfully deleted."
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User Profile",
+                "description": "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
+                "responses": {
+                    "200": {
+                        "description": "Profile information for a user",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Product": {
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "Unique identifier representing a specific product."
+                },
+                "code": {
+                    "type": "string",
+                    "description": "The store's internal code for a product."
+                },
+                "display_name": {
+                    "type": "string",
+                    "description": "Display name of product."
+                },
+                "detail": {
+                    "type": "string",
+                    "description": "Long description of the product"
+                },
+                "images": {
+                    "type": "string",
+                    "description": "Image URL representing the product."
+                },
+                "amount": {
+                    "type": "integer",
+                    "description": "Optional. Associated quantity."
+                }
+            }
+        },
+        "Sale": {
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "Unique sale identifier."
+                },
+                "creation": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Creation time"
+                },
+                "client_id": {
+                    "type": "string",
+                    "description": "Unique client identifier"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "Unique seller identifier"
+                },
+                "price_list": {
+                    "type": "string",
+                    "description": "Pricelist used on this transaction"
+                },
+                "discount": {
+                    "type": "number",
+                    "description": "Net discount"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "Sale's extra information."
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Activity"
+                    }
+                }
+            }
+        },
+        "Person": {
+            "description": "A human individual (client, user).",
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string",
+                    "description": "First name of the ERP user."
+                },
+                "last_name": {
+                    "type": "string",
+                    "description": "Last name of the ERP user."
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email address of the ERP user"
+                },
+                "picture": {
+                    "type": "string",
+                    "description": "Image URL of the ERP user."
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "postal_code": {
+                    "type": "integer"
+                },
+                "area": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "local_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Activity": {
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "description": "Unique identifier for the activity."
+                },
+                "elements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Product"
+                    }
+                }
+            }
+        },
+        "Error": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

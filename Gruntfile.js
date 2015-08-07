@@ -15,6 +15,8 @@ module.exports = function (grunt) {
 	// Time how long tasks take. Can help when optimizing build times
 	require('time-grunt')(grunt);
 
+	grunt.loadNpmTasks('grunt-swagger-js-codegen');
+
 	// Configurable paths for the application
 	var appConfig = {
 		app: require('./bower.json').appPath || 'app',
@@ -85,10 +87,11 @@ module.exports = function (grunt) {
 					src: [
 						'scripts/*.js',
 						'scripts/controllers/{,*/,*/*/}*.js',
-						'scripts/services/{,*/,*/*/}*.js'
+						'scripts/services/{,*/,*/*/}*.js',
+						'scripts/modules/{,*/,*/*/}*.js'
 					],
 					dest: '.tmp/'
-				}],
+				}]
 			},
 			e2e: {
 				files: [{
@@ -96,7 +99,7 @@ module.exports = function (grunt) {
 					cwd: '<%= yeoman.e2e %>',
 					src: '{,*/}*.js',
 					dest: '.tmp/e2e'
-				}],
+				}]
 			},
 			test: {
 				files: [{
@@ -104,7 +107,7 @@ module.exports = function (grunt) {
 					cwd: '<%= yeoman.unit %>',
 					src: '{,*/}*.js',
 					dest: '.tmp/spec'
-				}],
+				}]
 			}
 		},
 
@@ -441,7 +444,28 @@ module.exports = function (grunt) {
 				configFile: 'test/karma.conf.js',
 				singleRun: true
 			}
+		},
+
+		// Swagger compiler
+
+		'swagger-js-codegen': {
+			queries: {
+			options: {
+				apis: [
+				{
+					swagger: 'db/swagger.json',
+					moduleName: 'angularStore.api',
+					className: 'Api',
+					angularjs: true
+				}
+				],
+				dest: 'app/scripts/modules'
+			},
+			dist: {
+			}
+			}
 		}
+
 	});
 
 

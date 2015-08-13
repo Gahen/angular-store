@@ -15,10 +15,16 @@ angular
 		'ngSanitize',
 		'ngTouch',
 		'ui.router',
+		'firebase',
 		'angularStore.api'
 	])
 	.config(function ($stateProvider) {
 		$stateProvider
+			.state('main', {
+				url: '/',
+				templateUrl: 'views/main.html',
+				controller: 'MainCtrl'
+			})
 			.state('product', {
 				url: '/products/:id',
 				templateUrl: 'views/product.html',
@@ -38,5 +44,19 @@ angular
 				url: '/users',
 				templateUrl: 'views/users.html',
 				controller: 'UsersCtrl'
+			})
+			.state('login', {
+				url: '/login',
+				templateUrl: 'views/login.html',
+				controller: 'LoginCtrl'
 			});
+	})
+	.run(($rootScope, $state, auth) => {
+		$rootScope.$on('$stateChangeStart', (event, toState) => {
+			// Redirect to login if the user is not authenticated
+			if (toState.name !== 'login' && !auth.$getAuth()) {
+				event.preventDefault();
+				$state.go('login');
+			}
+		});
 	});

@@ -79,7 +79,7 @@ module.exports = function (grunt) {
 				files: {
 					'.tmp/concat/scripts/scripts.js': '.tmp/concat/scripts/scripts.js'
 				}
-			}, 
+			},
 			src: {
 				files: [{
 					expand: true,
@@ -88,7 +88,8 @@ module.exports = function (grunt) {
 						'scripts/*.js',
 						'scripts/controllers/{,*/,*/*/}*.js',
 						'scripts/services/{,*/,*/*/}*.js',
-						'scripts/modules/{,*/,*/*/}*.js'
+						'scripts/modules/{,*/,*/*/}*.js',
+						'scripts/directives/{,*/,*/*/}*.js'
 					],
 					dest: '.tmp/'
 				}]

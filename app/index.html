@@ -38,9 +38,9 @@
 					<div class="collapse navbar-collapse" id="js-navbar-collapse">
 
 						<ul class="nav navbar-nav">
-							<li class="active"><a ui-sref="main">Home</a></li>
-							<li><a ui-sref="products">Products</a></li>
-							<li><a ui-sref="users">Users</a></li>
+							<li ui-sref-active="active"><a ui-sref="main">Home</a></li>
+							<li ng-class="{active: $state.includes('products')}"><a ui-sref="products.list">Products</a></li>
+							<li ng-class="{active: $state.includes('users')}"><a ui-sref="users">Users</a></li>
 						</ul>
 						<ul class="pull-right">
 							<div>
@@ -94,8 +94,9 @@
 		<script src="scripts/app.js"></script>
 		<script src="scripts/modules/angularStore.api.js"></script>
 		<script src="scripts/controllers/main.js"></script>
-		<script src="scripts/controllers/product.js"></script>
-		<script src="scripts/controllers/products.js"></script>
+		<script src="scripts/controllers/productslist.js"></script>
+		<script src="scripts/controllers/newproduct.js"></script>
+		<script src="scripts/controllers/editproduct.js"></script>
 		<script src="scripts/controllers/user.js"></script>
 		<script src="scripts/controllers/users.js"></script>
 		<script src="scripts/controllers/login.js"></script>

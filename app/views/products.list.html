@@ -1,0 +1,5 @@
+<h2>Product List</h2>
+<a ui-sref="products.new" class="btn btn-primary">New product</a>
+<ul>
+	<li ng-repeat="product in products"><a ui-sref="products.edit({ productId: product.uuid})">{{ product.display_name }}</a></li>
+</ul>

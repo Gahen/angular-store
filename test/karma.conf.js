@@ -27,11 +27,13 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+      'bower_components/firebase/firebase.js',
+      'bower_components/angularfire/dist/angularfire.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
-      'app/scripts/**/*.js',
-      'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      '.tmp/scripts/**/*.js',
+      '.tmp/mock/**/*.js',
+      '.tmp/spec/**/*.js'
     ],
 
     // list of files / patterns to exclude

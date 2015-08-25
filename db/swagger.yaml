@@ -1,10 +1,8 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
   title: Angular Store API
-  description: Move your app forward with the Angular Store API
-  version: "1.0.0"
+  description: Store module for ERP based on AngularJS
+  version: "0.0.1"
 # the domain of the service
 host: jtumas.com.ar
 # array of all schemes that your API supports
@@ -12,76 +10,220 @@ schemes:
   - https
 # will be prefixed to all paths
 basePath: /storeAPI/v1
+consumes:
+  - application/json
 produces:
   - application/json
 paths:
-  /products/{productCode}:
+  /products:
     get:
-      summary: Product Types
-      description: |
-        The Products endpoint returns information about the *Angular Store* products.
-      parameters:
-        - name: productCode
-          in: path
-          description: Unique product code
-          required: true
-          type: string
       tags:
         - Products
+      description: Get a list of products.
       responses:
         200:
-          description: An array of products
+          description: Products successfully retrieved.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+       - Products
+      description: Create a new product.
+      parameters:
+        - name: body
+          in: body
+          description: Product object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: Product created succesfully.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      description: Get information about a product.
+      parameters:
+        - name: productId
+          in: path
+          description: Unique product id
+          required: true
+          type: string
+      responses:
+        200:
+          description: A product object.
           schema:
             $ref: '#/definitions/Product'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /sales:
-    get:
-      summary: Sales
-      description: All the store sales
+    put:
+      tags:
+        - Products
+      description: Update a product.
+      parameters:
+        - name: productId
+          in: path
+          description: Unique product code
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Product object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
       responses:
         200:
-          description: All sales
+          description: Product updated succesfully.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - Products
+      description: Delete a product.
+      parameters:
+        - name: productId
+          in: path
+          description: Code for product to be deleted.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Product successfully deleted.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /sales:
+    get:
+      tags:
+        - Store
+      description: Get a list of sales.
+      responses:
+        200:
+          description: Sales successfully retrieved.
           schema:
             type: array
             items:
               $ref: '#/definitions/Sale'
-          examples:
-            application/json:
-              items: 
-                - 
-                  test: something
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - Store
+      description: Create a new sale.
+      parameters:
+        - name: body
+          in: body
+          description: Sale object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Sale'
+      responses:
+        200:
+          description: Sale sucessfully created.
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
   /sales/{saleId}:
     get:
-      summary: Sale
-      description: Sale details
+      tags:
+        - Store
+      description: Get information about a sale.
       parameters:
         - name: saleId
           in: path
           description: Unique sale identifier
           required: true
-          type: integer
-          format: int32
+          type: string
       responses:
         200:
           description: A sale
           schema:
             $ref: '#/definitions/Sale'
-          examples:
-            application/json:
-              test: something
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - Store
+      description: Add an activity to the sale.
+      parameters:
+        - name: saleId
+          in: path
+          description: Unique sale identifier
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: The activity object to be added to the sale.
+          required: true
+          schema:
+            $ref: '#/definitions/Activity'
+      responses:
+        200:
+          description: Activity successfully added.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - Store
+      description: Update a sale.
+      parameters:
+        - name: saleId
+          in: path
+          description: Unique sale identifier
+          required: true
+          type: string
+      responses:
+        200:
+          description: Sale successfully updated.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - Store
+      description: Delete a sale.
+      parameters:
+        - name: saleId
+          in: path
+          description: Unique sale identifier
+          required: true
+          type: string
+      responses:
+        200:
+          description: Sale successfully deleted.
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
   /stock/{storeId}:
     get:
+      tags:
+        - Store
       summary: Stock details
       description: The store's complete stock
       parameters:
@@ -89,22 +231,22 @@ paths:
           in: path
           description: Unique Store's id.
           required: true
-          type: integer
-          format: int32
+          type: string
       responses:
         200:
-          description: An array of products
+          description: An array of activities.
           schema:
-            $ref: '#/definitions/Activities'
-          examples:
-            application/json:
-              name: Puma
+            type: array
+            items:
+              $ref: '#/definitions/Activity'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /reposition/{repositionId}:
+  /repositions/{repositionId}:
     get:
+      tags:
+        - Store
       summary: Reposition details
       description: All the details of the selected reposition.
       parameters:
@@ -112,24 +254,23 @@ paths:
           in: path
           description: Unique reposition's id.
           required: true
-          type: integer
-          format: int32
+          type: string
       responses:
         200:
-          description: An array of the reposition's products and specific details
+          description: An array of the reposition's products and specific details.
           schema:
-            $ref: '#/definitions/Activities'
-          examples:
-            application/json:
-              name: Puma
+            type: array
+            items:
+              $ref: '#/definitions/Activity'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
   /users:
     get:
-      summary: System user's
-      description: All system users available for the current scope.
+      tags:
+        - User
+      description: Get a list of system users
       responses:
         200:
           description: An array of system users
@@ -137,20 +278,94 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Person'
-          examples:
-            application/json:
-              - user: 
-                  name: cacho
-              - other:
-                  name: sarasa
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - User
+      description: Create a new user
+      parameters:
+        - name: body
+          in: body
+          description: User object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        200:
+          description: User created successfully
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/{userId}:
+    get:
+      tags:
+        - User
+      description: Get information about a user.
+      parameters:
+        - name: userId
+          in: path
+          description: Unique user id
+          required: true
+          type: string
+      responses:
+        200:
+          description: User retrieved successfully.
+          schema:
+            $ref: '#/definitions/Person'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - User
+      description: Update a user.
+      parameters:
+        - name: userId
+          in: path
+          description: Unique user id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: User object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        200:
+          description: User updated succesfully.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - User
+      description: Delete a user.
+      parameters:
+        - name: userId
+          in: path
+          description: Unique user id
+          required: true
+          type: string
+      responses:
+        200:
+          description: User successfully deleted.
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
   /clients:
     get:
+      tags:
+        - Store
       summary: Store clients
-      description: All clients owned by the current store.
+      description: Get a list of all clients owned by the current store.
       responses:
         200:
           description: An array of clients
@@ -158,22 +373,95 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Person'
-          examples:
-            application/json:
-              - user: 
-                  name: cacho
-              - other:
-                  name: sarasa
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+    post:
+      tags:
+        - Store
+      description: Create a new client
+      parameters:
+        - name: body
+          in: body
+          description: Client object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        200:
+          description: An array of clients
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /clients/{clientId}:
+    get:
+      tags:
+        - Store
+      description: Get information about a client.
+      parameters:
+        - name: clientId
+          in: path
+          description: Unique client id
+          required: true
+          type: string
+      responses:
+        200:
+          description: User retrieved successfully.
+          schema:
+            $ref: '#/definitions/Person'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - Store
+      description: Update a client.
+      parameters:
+        - name: clientId
+          in: path
+          description: Unique client id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Client object to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        200:
+          description: Client succesfully updated.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - Store
+      description: Delete a user.
+      parameters:
+        - name: clientId
+          in: path
+          description: Unique client id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Client successfully deleted.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   /me:
     get:
-      summary: User Profile
-      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
       tags:
         - User
+      summary: User Profile
+      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
       responses:
         200:
           description: Profile information for a user
@@ -183,38 +471,15 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /history:
-    get:
-      summary: User Activity
-      description: The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.
-      parameters:
-        - name: offset
-          in: query
-          type: integer
-          format: int32
-          description: Offset the list of returned results by this amount. Default is zero.
-        - name: limit
-          in: query
-          type: integer
-          format: int32
-          description: Number of items to retrieve. Default is 5, maximum is 100.
-      tags:
-        - User
-      responses:
-        200:
-          description: History information for the given user
-          schema:
-            $ref: '#/definitions/Activities'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
 definitions:
   Product:
     properties:
-      code:
+      uuid:
         type: string
         description: Unique identifier representing a specific product.
+      code:
+        type: string
+        description: The store's internal code for a product.
       display_name:
         type: string
         description: Display name of product.
@@ -229,14 +494,14 @@ definitions:
         description: Optional. Associated quantity.
   Sale:
     properties:
-      id:
+      uuid:
         type: string
         description: Unique sale identifier.
       creation:
         type: string
         format: date
         description: Creation time
-      client_id: 
+      client_id:
         type: string
         description: Unique client identifier
       user_id:
@@ -247,16 +512,20 @@ definitions:
         description: Pricelist used on this transaction
       discount:
         type: number
-        description: Net discount 
+        description: Net discount
       comment:
         type: string
         description: Sale's extra information.
       products:
         type: array
-        items: 
+        items:
           $ref: '#/definitions/Activity'
   Person:
+    description:
+      A human individual (client, user).
     properties:
+      uuid:
+        type: string
       first_name:
         type: string
         description: First name of the ERP user.
@@ -287,29 +556,11 @@ definitions:
     properties:
       uuid:
         type: string
-        description: Unique identifier for the activity
+        description: Unique identifier for the activity.
       elements:
         type: array
         items:
           $ref: '#/definitions/Product'
-  Activities:
-    properties:
-      offset:
-        type: integer
-        format: int32
-        description: Position in pagination.
-      limit:
-        type: integer
-        format: int32
-        description: Number of items to retrieve (100 max).
-      count:
-        type: integer
-        format: int32
-        description: Total number of items available.
-      history:
-        type: array
-        items:
-          $ref: '#/definitions/Activity'
   Error:
     properties:
       code:

@@ -15,13 +15,15 @@ module.exports = function (grunt) {
 	// Time how long tasks take. Can help when optimizing build times
 	require('time-grunt')(grunt);
 
+	grunt.loadNpmTasks('grunt-swagger-js-codegen');
+
 	// Configurable paths for the application
 	var appConfig = {
 		app: require('./bower.json').appPath || 'app',
 		dist: 'dist',
 		test: 'test',
 		e2e: 'test/e2e',
-		unit: 'test/unit'
+		unit: 'test/spec'
 	};
 
 	// Define the configuration for all the tasks
@@ -77,17 +79,20 @@ module.exports = function (grunt) {
 				files: {
 					'.tmp/concat/scripts/scripts.js': '.tmp/concat/scripts/scripts.js'
 				}
-			}, 
+			},
 			src: {
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.app %>',
 					src: [
 						'scripts/*.js',
-						'scripts/controllers/{,*/,*/*/}*.js'
+						'scripts/controllers/{,*/,*/*/}*.js',
+						'scripts/services/{,*/,*/*/}*.js',
+						'scripts/modules/{,*/,*/*/}*.js',
+						'scripts/directives/{,*/,*/*/}*.js'
 					],
 					dest: '.tmp/'
-				}],
+				}]
 			},
 			e2e: {
 				files: [{
@@ -95,15 +100,15 @@ module.exports = function (grunt) {
 					cwd: '<%= yeoman.e2e %>',
 					src: '{,*/}*.js',
 					dest: '.tmp/e2e'
-				}],
+				}]
 			},
 			test: {
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.unit %>',
 					src: '{,*/}*.js',
-					dest: '.tmp/unit'
-				}],
+					dest: '.tmp/spec'
+				}]
 			}
 		},
 
@@ -440,7 +445,28 @@ module.exports = function (grunt) {
 				configFile: 'test/karma.conf.js',
 				singleRun: true
 			}
+		},
+
+		// Swagger compiler
+
+		'swagger-js-codegen': {
+			queries: {
+			options: {
+				apis: [
+				{
+					swagger: 'db/swagger.json',
+					moduleName: 'angularStore.api',
+					className: 'Api',
+					angularjs: true
+				}
+				],
+				dest: 'app/scripts/modules'
+			},
+			dist: {
+			}
+			}
 		}
+
 	});
 
 
@@ -470,6 +496,8 @@ module.exports = function (grunt) {
 		'wiredep:test',
 		'concurrent:test',
 		'autoprefixer',
+		'babel:src',
+		'babel:test',
 		'connect:test',
 		'karma'
 	]);

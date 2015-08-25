@@ -1,0 +1,12 @@
+<form ng-submit="save()" novalidate>
+	<div class="form-group">
+		<label for="firstName">First Name</label>
+		<input ng-model="user.first_name" type="text" class="form-control" id="firstName" placeholder="Name">
+	</div>
+	<div class="form-group">
+		<label for="lastName">Last Name</label>
+		<textarea ng-model="user.last_name" class="form-control" id="lastName" placeholder="Detail"></textarea>
+	</div>
+	<button type="submit" class="btn btn-primary">Save</button>
+	<button type="button" class="btn btn-danger" ng-click="del()" ng-if="editMode">Delete</button>
+</form>
